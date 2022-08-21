@@ -1,0 +1,11 @@
+[Unit]
+Description=Kludge for a Gigabyte videocard
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/gigfun
+
+[Install]
+WantedBy=graphical-session.target
