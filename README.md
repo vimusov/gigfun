@@ -1,27 +1,25 @@
-# Что?
+# What?
 
-gigfun - Утилита-костыль для видеокарты Gigabyte GeForce RTX 3090 Ti ([GV-N309TGAMING OC-24GD](https://www.gigabyte.com/Graphics-Card/GV-N309TGAMING-OC-24GD)).
+gigfun - Utility that takes control over your nVidia video card coolers to keep it cool and steady.
 
-# Зачем?
+# Why?
 
-Видеокарта наотрез отказывается разгонять кулеры быстрее 80% даже когда начинает откровенно перегреваться, хотя переключатель BIOS стоит в положении "OC", а не "Silent". Данная утилита-костыль исправляет это недоразумение, форсируя запуск кулеров на 100% когда температура переваливает за 70℃.
+My GeForce 3090 Ti can not control its own coolers! So that is a kludge to do it programmatically.
 
-# Как?
+# How?
 
-Демон должен стартовать вместе с X-ами поскольку требует опцию "Coolbits" (см. далее).
+The program works as a daemon. When the GPU temperature rises it runs the coolers faster and vice versa.
+Daemon must be started with Xorg because in requires "Coolbits" options (see below).
 
-# Зависимости
+# Requirements
 
+- Go >= 1.16;
 - `nvidia-settings`;
 - `nvidia-utils` (утилита `nvidia-smi`);
 
-# Сборка
+# Setup
 
-Требуется golang >= 1.16.
-
-# Использование
-
-1. Настраиваем опцию "Coolbits" как [написано в wiki](https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Enabling_overclocking):
+1. Setup the option "Coolbits" how it is [described here](https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Enabling_overclocking):
 
    ```
    # /etc/X11/xorg.conf.d/nvidia.conf
@@ -32,7 +30,7 @@ gigfun - Утилита-костыль для видеокарты Gigabyte GeFo
    EndSection
    ```
 
-2. Копируем юнит к текущему пользователю, обновляем список юнитов, запускаем юнит:
+2. Copy systemd unit to a local user and enable it:
 
    ```
    install -D -m 0644 /usr/share/gigfun/service.example ~/.config/systemd/user/gigfun.service
@@ -40,6 +38,6 @@ gigfun - Утилита-костыль для видеокарты Gigabyte GeFo
    systemctl --user enable --now gigfun.service
    ```
 
-# Лицензия
+# License
 
 GPL.
