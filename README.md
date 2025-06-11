@@ -19,7 +19,7 @@ Daemon must be started with Xorg because in requires "Coolbits" options (see bel
 
 # Setup
 
-1. Setup the option "Coolbits" how it is [described here](https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Enabling_overclocking):
+Set the option "Coolbits" as it is [described here](https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Enabling_overclocking):
 
    ```
    # /etc/X11/xorg.conf.d/nvidia.conf
@@ -28,14 +28,6 @@ Daemon must be started with Xorg because in requires "Coolbits" options (see bel
        Driver     "nvidia"
        Option     "Coolbits" "4"
    EndSection
-   ```
-
-2. Copy systemd unit to a local user and enable it:
-
-   ```
-   install -D -m 0644 /usr/share/gigfun/service.example ~/.config/systemd/user/gigfun.service
-   systemctl --user daemon-reload
-   systemctl --user enable --now gigfun.service
    ```
 
 # License
