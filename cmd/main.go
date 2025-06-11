@@ -87,13 +87,14 @@ func setFanSpeed(speed int) {
 func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		for {
-			temp := getCurrentTemp()
-			speed := getFanSpeed(temp)
-			setFanSpeed(speed)
-			time.Sleep(15 * time.Second)
+	for {
+		temp := getCurrentTemp()
+		speed := getFanSpeed(temp)
+		setFanSpeed(speed)
+		select {
+		case <-signals:
+			return
+		case <-time.After(15 * time.Second):
 		}
-	}()
-	<-signals
+	}
 }
