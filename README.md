@@ -4,31 +4,59 @@ gigfun - Utility that takes control over your nVidia video card coolers to keep 
 
 # Why?
 
-My GeForce 3090 Ti can not control its own coolers! So that is a kludge to do it programmatically.
+nVidia cards can not control their own coolers! So that is a kludge to do it programmatically.
 
 # How?
 
 The program works as a daemon. When the GPU temperature rises it runs the coolers faster and vice versa.
-Daemon must be started with Xorg because in requires "Coolbits" options (see below).
+Daemon should be started with Xorg because `nvidia-settings` is unable to work without it.
 
 # Requirements
 
-- Go >= 1.16;
+## Build
+
+- `Go >= 1.16`;
+- `just`;
+
+## Start
+
+- `sudo`;
 - `nvidia-settings`;
-- `nvidia-utils` (утилита `nvidia-smi`);
+- `nvidia-utils` (`nvidia-smi` utility);
 
 # Setup
 
-Set the option "Coolbits" as it is [described here](https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Enabling_overclocking):
+1. Build and install the binary to some place:
 
    ```
-   # /etc/X11/xorg.conf.d/nvidia.conf
-   Section "Device"
-       Identifier "Device0"
-       Driver     "nvidia"
-       Option     "Coolbits" "4"
-   EndSection
+   just
+   sudo just install /usr/local/bin
    ```
+
+1. Create systemd unit config:
+
+   ```
+   # ~/.config/systemd/user/gigfun.service
+   [Unit]
+   Description=Kludge for a nVidia videocard
+   After=graphical-session.target
+   PartOf=graphical-session.target
+
+   [Service]
+   Type=exec
+   ExecStart=/usr/bin/sudo /usr/local/bin/gigfun
+
+   [Install]
+   WantedBy=graphical-session.target
+   ```
+
+1. Reload systemd units:
+
+   `systemctl --user daemon-reload`
+
+1. Enable and start it:
+
+   `systemctl --user --enable --now gigfun.service`
 
 # License
 

@@ -9,4 +9,4 @@ clean:
     rm -f {{target}}
 
 install destdir: build
-    install -D -m 0755 {{target}} "{{destdir}}"/usr/bin/{{target}}
+    install -D -m 0755 {{target}} "{{destdir}}"{{target}}
